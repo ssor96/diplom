@@ -11,27 +11,29 @@ std::vector<int> gauss(Matrix &m) {
     for (int i = 0; i < m.n; ++i) {
         order[i] = i;
     }
-    for (int i = 0; i < m.n; ++i) {
-        int where = i;
-        for (int j = i + 1; j < m.n; ++j) {
-            if (fabs(m(i, j)) > fabs(m(i, j))) {
-                where = j;
+    int startRow = 0;
+    for (int j = 0; j < m.m; ++j) {
+        int where = startRow;
+        for (int i = startRow + 1; i < m.n; ++i) {
+            if (fabs(m(i, j)) > fabs(m(where, j))) {
+                where = i;
             }
         }
-        if (fabs(m(i, where)) < EPS) {
-            order.resize(i);
-            break;
+        if (fabs(m(where, j)) < EPS) {
+            continue;
         }
-        std::swap(order[i], order[where]);
-        m.swapLines(i, where);
-        for (int j = i + 1; j < m.n; ++j) {
-            double mult = m(j, i) / m(i, i);
-            m(j, i) = 0;
-            for (int k = i + 1; k < m.m; ++k) {
-                m(j, k) -= mult * m(i, k);
+        std::swap(order[startRow], order[where]);
+        m.swapLines(startRow, where);
+        for (int i = startRow + 1; i < m.n; ++i) {
+            double mult = m(i, j) / m(startRow, j);
+            m(i, j) = 0;
+            for (int k = j + 1; k < m.m; ++k) {
+                m(i, k) -= mult * m(startRow, k);
             }
         }
+        startRow++;
     }
+    order.resize(startRow);
     return order;
 }
 
