@@ -12,7 +12,7 @@ std::vector<int> gauss(Matrix &m) {
         order[i] = i;
     }
     int startRow = 0;
-    for (int j = 0; j < m.m; ++j) {
+    for (int j = 0; j < m.m && startRow < m.n; ++j) {
         int where = startRow;
         for (int i = startRow + 1; i < m.n; ++i) {
             if (fabs(m(i, j)) > fabs(m(where, j))) {
