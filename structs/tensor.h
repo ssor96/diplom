@@ -1,11 +1,15 @@
 #pragma once
 #include <iostream>
+#include "structs/tensorBase.h"
 #include "structs/matrix.h"
 
-class Tensor {
+class Tensor : public TensorBase {
 public:
-    using T = double;
-    int d;
+    friend class TensorTrain;
+
+    Tensor() {
+        n = nullptr;
+    }
 
     Tensor(int d, int *_n, const T *_data = nullptr);
 
@@ -15,7 +19,7 @@ public:
 
     void reshape(int k, int *_n);
 
-    T& get(int *indexes);
+    T get(int *indexes) override;
 
     void read(std::istream &is);
 
@@ -24,13 +28,16 @@ public:
     friend std::ostream& operator << (std::ostream &os, Tensor &t);
 
     ~Tensor() {
-        delete []n;
+        if (n != nullptr) {
+            delete []n;
+            n = nullptr;
+        }
         if (data != nullptr) {
             delete []data;
+            data = nullptr;
         }
     }
 private:
-    int *n;
     T *data = nullptr;
     void fill(int _d, int *_n, const T *_data);
     void _read(std::istream &is, int curIdx, int pos);

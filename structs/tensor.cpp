@@ -3,7 +3,7 @@
 
 #include "structs/tensor.h"
 
-Tensor::Tensor(int d, int *_n, const T *_data) : d(d) {
+Tensor::Tensor(int d, int *_n, const T *_data) {
     fill(d, _n, _data);
 }
 
@@ -14,7 +14,7 @@ void Tensor::reshape(int _d, int *_n) {
     d = _d;
 }
 
-Tensor::T& Tensor::get(int *indexes) {
+Tensor::T Tensor::get(int *indexes) {
     int idx = indexes[0];
     for (int i = 1; i < d; ++i) {
         idx = idx * n[i] + indexes[i];
