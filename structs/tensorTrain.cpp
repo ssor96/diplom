@@ -29,7 +29,10 @@ TensorTrain::TensorTrain(Tensor t) {
     coreDims[2] = 1;
     cores[d - 1] = last.toTensor(3, coreDims);
     for (int i = 0; i < d; ++i) {
-        std::cout << cores[i] << std::endl;
+        for (int j = 0; j < 3; ++j) {
+            std::cout << cores[i].n[j] << " ";
+        }
+        std::cout << std::endl;
     }
 }
 
